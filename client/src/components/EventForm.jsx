@@ -155,7 +155,7 @@ export default function EventForm({ event, onClose, onSuccess }) {
   }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 overflow-y-auto p-4">
+    <div className=" inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 overflow-y-auto p-4">
       <div className="bg-white rounded-lg shadow-lg w-full max-w-4xl my-8">
         <div className="p-4 sm-p-6 border-b flex items-center justify-between sticky top-0 bg-white z-10 rounded-t-lg">
           <h2 className="text-xl sm-text-2xl font-semibold">
