@@ -1,0 +1,67 @@
+# Environment variables (sensitive data - NEVER commit these!)
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+*.env
+
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Logs
+logs/
+*.log
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory
+coverage/
+.nyc_output/
+
+# Build outputs
+dist/
+build/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Temporary files
+*.tmp
+*.temp
+
+# Debug files
+*.tsbuildinfo
+
+# Database files (if using local SQLite)
+*.sqlite
+*.sqlite3
+*.db
+
+# Uploads directory (if storing files locally - consider cloud storage for production)
+uploads/
+public/uploads/
+
+# API keys and secrets (backup reminder)
+*.key
+*.pem
+*.cert
+secrets.json
+credentials.json
