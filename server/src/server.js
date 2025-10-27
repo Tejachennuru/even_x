@@ -23,16 +23,16 @@ app.get('/health', (req, res) => {
   res.json({ status: 'OK', message: 'EvenX API is running' });
 });
 
-// ✅ Serve frontend build (fixed path)
-const frontendPath = path.join(__dirname, '../client/dist');
+// ✅ Serve frontend build (Render + local fix)
+const frontendPath = path.join(__dirname, '../../client/dist');
 app.use(express.static(frontendPath));
 
-// ✅ React Router fallback (Express 5-safe)
+// ✅ React Router fallback (Express 5 safe)
 app.get(/^\/(?!api).*/, (req, res) => {
   res.sendFile(path.join(frontendPath, 'index.html'));
 });
 
-// Error handling
+// Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ error: 'Something went wrong!' });
