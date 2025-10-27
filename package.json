@@ -2,9 +2,9 @@
   "name": "combined-fullstack-app",
   "private": true,
   "scripts": {
-    "postinstall": "npm --prefix server install && npm --prefix client install --include=dev",
-    "build": "npm --prefix client run build",
-    "start": "npm --prefix server run start"
+  "postinstall": "npm --prefix server ci && npm --prefix client ci --include=dev",   
+  "build": "npm --prefix client run build",
+  "start": "npm --prefix server run start"
   },
   "engines": {
     "node": "18.x || 20.x"
