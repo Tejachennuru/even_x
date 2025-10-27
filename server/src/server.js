@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 require('dotenv').config();
 
 const eventRoutes = require('./routes/event');
@@ -13,7 +14,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Routes
+// API Routes
 app.use('/api/events', eventRoutes);
 app.use('/api/admin', adminRoutes);
 
@@ -22,12 +23,22 @@ app.get('/health', (req, res) => {
   res.json({ status: 'OK', message: 'EvenX API is running' });
 });
 
-// Error handling middleware
+// ✅ Serve frontend build (fixed path)
+const frontendPath = path.join(__dirname, '../client/dist');
+app.use(express.static(frontendPath));
+
+// ✅ React Router fallback (Express 5-safe)
+app.get(/^\/(?!api).*/, (req, res) => {
+  res.sendFile(path.join(frontendPath, 'index.html'));
+});
+
+// Error handling
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ error: 'Something went wrong!' });
 });
 
+// Start server
 app.listen(PORT, () => {
   console.log(`🚀 EvenX server is running on port ${PORT}`);
 });
