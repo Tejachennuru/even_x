@@ -1,12 +1,12 @@
-
 import React from 'react'
-import { ChevronLeft, MapPin, Users, Phone, Mail, Clock, Calendar, Tag, DollarSign, Utensils, Zap, Wifi, Speaker } from 'lucide-react'
+import { ChevronLeft, MapPin, Users, Phone, Mail, Clock, Calendar, DollarSign, Utensils, Zap, Wifi, Speaker } from 'lucide-react'
+import './EventDetailsView.css'
 
 const EVENT_TYPE_COLORS = {
-  tech: { bg: 'bg-red-500', text: 'text-red-700', badge: 'bg-red-50' },
-  cultural: { bg: 'bg-blue-500', text: 'text-blue-700', badge: 'bg-blue-50' },
-  wellness: { bg: 'bg-green-500', text: 'text-green-700', badge: 'bg-green-50' },
-  general: { bg: 'bg-gray-800', text: 'text-gray-700', badge: 'bg-gray-50' },
+  tech: { bgClass: 'type-tech', textClass: 'type-tech-text', badgeClass: 'type-tech-badge' },
+  cultural: { bgClass: 'type-cultural', textClass: 'type-cultural-text', badgeClass: 'type-cultural-badge' },
+  wellness: { bgClass: 'type-wellness', textClass: 'type-wellness-text', badgeClass: 'type-wellness-badge' },
+  general: { bgClass: 'type-general', textClass: 'type-general-text', badgeClass: 'type-general-badge' },
 }
 
 export default function EventDetailsView({ event, onBack }) {
@@ -21,61 +21,47 @@ export default function EventDetailsView({ event, onBack }) {
   const typeColors = EVENT_TYPE_COLORS[event.type] || EVENT_TYPE_COLORS.general
 
   return (
-    <div className="max-w-5xl mx-auto">
+    <div className="edv-container">
       {/* Header with Back Button */}
-      <div className="mb-6">
-        <button 
-          onClick={onBack} 
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow"
-        >
-          <ChevronLeft size={20} /> 
-          <span className="font-medium">Back to Events</span>
+      <div className="edv-header">
+        <button onClick={onBack} className="edv-back-btn">
+          <ChevronLeft size={20} />
+          <span className="edv-back-text">Back to Events</span>
         </button>
       </div>
 
       {/* Main Content Card */}
-      <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+      <div className="edv-card">
         {/* Hero Image */}
-        <div className="relative h-96 overflow-hidden bg-gradient-to-br from-purple-100 to-blue-100">
+        <div className="edv-hero">
           <img 
             src={event.poster_url} 
             alt={event.name} 
-            className="w-full h-full object-cover"
+            className="edv-hero-img"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
-          
+          <div className="edv-hero-overlay"></div>
+
           {/* Event Type Badge */}
-          <div className="absolute top-4 right-4">
-            <span className={`inline-block px-4 py-2 rounded-full text-white font-semibold text-sm ${typeColors.bg} shadow-lg`}>
+          <div className="edv-badge-wrap">
+            <span className={`edv-badge ${typeColors.bgClass}`}>
               {event.type ? event.type.charAt(0).toUpperCase() + event.type.slice(1) : 'General'}
             </span>
           </div>
 
           {/* Title Overlay */}
-          <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
-            <h1 className="text-4xl font-bold mb-2">{event.name}</h1>
-            <div className="flex items-center gap-4 text-sm">
-              <div className="flex items-center gap-2">
+          <div className="edv-title-wrap">
+            <h1 className="edv-title">{event.name}</h1>
+            <div className="edv-meta">
+              <div className="edv-meta-item">
                 <Calendar size={16} />
-                <span>{new Date(event.start_time).toLocaleDateString('en-US', { 
-                  weekday: 'long', 
-                  year: 'numeric', 
-                  month: 'long', 
-                  day: 'numeric' 
-                })}</span>
+                <span>{new Date(event.start_time).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="edv-meta-item">
                 <Clock size={16} />
                 <span>
-                  {new Date(event.start_time).toLocaleTimeString('en-US', { 
-                    hour: '2-digit', 
-                    minute: '2-digit' 
-                  })}
+                  {new Date(event.start_time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
                   {' - '}
-                  {new Date(event.end_time).toLocaleTimeString('en-US', { 
-                    hour: '2-digit', 
-                    minute: '2-digit' 
-                  })}
+                  {new Date(event.end_time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
                 </span>
               </div>
             </div>
@@ -83,51 +69,45 @@ export default function EventDetailsView({ event, onBack }) {
         </div>
 
         {/* Content Grid */}
-        <div className="grid md-grid-cols-3 gap-8 p-8">
+        <div className="edv-grid">
           {/* Main Content - 2 columns */}
-          <div className="md-col-span-2 space-y-8">
-            {/* Description */}
+          <div className="edv-main">
             <section>
-              <h2 className="text-2xl font-bold mb-4 text-gray-900">About This Event</h2>
-              <p className="text-gray-700 leading-relaxed text-base">{event.description}</p>
+              <h2 className="edv-heading">About This Event</h2>
+              <p className="edv-description break-words">{event.description}</p>
             </section>
 
             {/* Hospitality */}
             {event.hospitality && (Object.values(event.hospitality).some(val => val)) && (
-              <section className="bg-purple-50 rounded-lg p-6">
-                <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
-                  <Utensils size={20} className="text-purple-600" />
-                  Hospitality Arrangements
-                </h3>
-                <div className="grid grid-cols-2 gap-4 text-sm">
+              <section className="edv-hospitality">
+                <h3 className="edv-subheading"><Utensils size={20} className="edv-accent" /> Hospitality Arrangements</h3>
+                <div className="edv-hosp-grid">
                   {event.hospitality.chairs > 0 && (
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 rounded-full bg-purple-600"></div>
-                      <span className="text-gray-700"><strong>{event.hospitality.chairs}</strong> Chairs</span>
+                    <div className="edv-hosp-item">
+                      <div className="edv-dot"></div>
+                      <span><strong>{event.hospitality.chairs}</strong> Chairs</span>
                     </div>
                   )}
                   {event.hospitality.tables > 0 && (
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 rounded-full bg-purple-600"></div>
-                      <span className="text-gray-700"><strong>{event.hospitality.tables}</strong> Tables</span>
+                    <div className="edv-hosp-item">
+                      <div className="edv-dot"></div>
+                      <span><strong>{event.hospitality.tables}</strong> Tables</span>
                     </div>
                   )}
                   {event.hospitality.electricity && (
-                    <div className="flex items-center gap-2">
-                      <Zap size={16} className="text-purple-600" />
-                      <span className="text-gray-700">Electricity Available</span>
+                    <div className="edv-hosp-item">
+                      <Zap size={16} className="edv-accent" />
+                      <span>Electricity Available</span>
                     </div>
                   )}
                   {event.hospitality.food && (
-                    <div className="flex items-center gap-2 col-span-2">
-                      <Utensils size={16} className="text-purple-600" />
-                      <span className="text-gray-700">{event.hospitality.food}</span>
+                    <div className="edv-hosp-item edv-hosp-full">
+                      <Utensils size={16} className="edv-accent" />
+                      <span>{event.hospitality.food}</span>
                     </div>
                   )}
                   {event.hospitality.others && (
-                    <div className="col-span-2 text-gray-600 italic">
-                      {event.hospitality.others}
-                    </div>
+                    <div className="edv-hosp-others">{event.hospitality.others}</div>
                   )}
                 </div>
               </section>
@@ -135,107 +115,83 @@ export default function EventDetailsView({ event, onBack }) {
 
             {/* Logistics */}
             {event.logistics && (Object.values(event.logistics).some(val => val)) && (
-              <section className="bg-blue-50 rounded-lg p-6">
-                <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
-                  <Speaker size={20} className="text-blue-600" />
-                  Logistics & Facilities
-                </h3>
-                <div className="flex flex-wrap gap-3">
+              <section className="edv-logistics">
+                <h3 className="edv-subheading"><Speaker size={20} className="edv-accent" /> Logistics & Facilities</h3>
+                <div className="edv-tags">
                   {event.logistics.sound && (
-                    <div className="flex items-center gap-2 px-3 py-2 bg-white rounded-md shadow-sm">
-                      <Speaker size={16} className="text-blue-600" />
-                      <span className="text-sm font-medium text-gray-700">Sound System</span>
-                    </div>
+                    <div className="edv-tag"><Speaker size={16} className="edv-accent" /><span>Sound System</span></div>
                   )}
                   {event.logistics.wifi && (
-                    <div className="flex items-center gap-2 px-3 py-2 bg-white rounded-md shadow-sm">
-                      <Wifi size={16} className="text-blue-600" />
-                      <span className="text-sm font-medium text-gray-700">WiFi Available</span>
-                    </div>
+                    <div className="edv-tag"><Wifi size={16} className="edv-accent" /><span>WiFi Available</span></div>
                   )}
                 </div>
                 {event.logistics.others && (
-                  <div className="mt-3 text-sm text-gray-600 italic">
-                    {event.logistics.others}
-                  </div>
+                  <div className="edv-logistics-others">{event.logistics.others}</div>
                 )}
               </section>
             )}
           </div>
 
           {/* Sidebar - 1 column */}
-          <div className="space-y-6">
-            {/* Quick Info Card */}
-            <div className="bg-gray-50 rounded-lg p-6 space-y-4">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Event Details</h3>
-              
-              <div className="flex items-start gap-3">
-                <MapPin size={20} className="text-purple-600 flex-shrink-0 mt-1" />
+          <aside className="edv-sidebar">
+            <div className="edv-info-card">
+              <h3 className="edv-info-heading">Event Details</h3>
+
+              <div className="edv-info-row">
+                <MapPin size={20} className="edv-accent" />
                 <div>
-                  <div className="text-xs text-gray-500 uppercase font-medium">Venue</div>
-                  <div className="text-sm font-medium text-gray-900">{event.venue}</div>
+                  <div className="edv-info-label">Venue</div>
+                  <div className="edv-info-value break-words">{event.venue}</div>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3">
-                <Users size={20} className="text-purple-600 flex-shrink-0 mt-1" />
+              <div className="edv-info-row">
+                <Users size={20} className="edv-accent" />
                 <div>
-                  <div className="text-xs text-gray-500 uppercase font-medium">Expected Attendance</div>
-                  <div className="text-sm font-medium text-gray-900">{event.footfall} people</div>
+                  <div className="edv-info-label">Expected Attendance</div>
+                  <div className="edv-info-value">{event.footfall} people</div>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3">
-                <DollarSign size={20} className="text-purple-600 flex-shrink-0 mt-1" />
+              <div className="edv-info-row">
+                <DollarSign size={20} className="edv-accent" />
                 <div>
-                  <div className="text-xs text-gray-500 uppercase font-medium">Tickets</div>
+                  <div className="edv-info-label">Tickets</div>
                   {event.ticket_available ? (
-                    <div className="text-sm text-gray-900">
+                    <div className="edv-ticket-prices">
                       <div>GITAM: <strong>₹{event.gitam_price}</strong></div>
                       <div>Others: <strong>₹{event.other_price}</strong></div>
                     </div>
                   ) : (
-                    <div className="text-sm font-medium text-green-600">Free Entry</div>
+                    <div className="edv-free">Free Entry</div>
                   )}
                 </div>
               </div>
             </div>
 
-            {/* Organizer Card */}
-            <div className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-lg p-6 border border-purple-100">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Contact Organizer</h3>
-              
-              <div className="space-y-3">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-purple-600 flex items-center justify-center text-white font-semibold">
-                    {event.organizer_name?.charAt(0).toUpperCase()}
-                  </div>
-                  <div>
-                    <div className="font-medium text-gray-900">{event.organizer_name}</div>
-                    <div className="text-xs text-gray-500">Event Organizer</div>
-                  </div>
-                </div>
+            <div className="edv-organizer-card">
+              <h3 className="edv-info-heading">Contact Organizer</h3>
 
-                <div className="pt-3 border-t border-purple-200 space-y-2">
-                  <a 
-                    href={`tel:${event.organizer_number}`}
-                    className="flex items-center gap-2 text-sm text-gray-700 hover:text-purple-600 transition-colors"
-                  >
-                    <Phone size={16} />
-                    <span>{event.organizer_number}</span>
-                  </a>
-                  
-                  <a 
-                    href={`mailto:${event.organizer_email}`}
-                    className="flex items-center gap-2 text-sm text-gray-700 hover:text-purple-600 transition-colors"
-                  >
-                    <Mail size={16} />
-                    <span className="break-all">{event.organizer_email}</span>
-                  </a>
+              <div className="edv-organizer">
+                <div className="edv-avatar">{event.organizer_name?.charAt(0).toUpperCase()}</div>
+                <div>
+                  <div className="edv-organizer-name">{event.organizer_name}</div>
+                  <div className="edv-organizer-role">Event Organizer</div>
                 </div>
               </div>
+
+              <div className="edv-contact-list">
+                <a href={`tel:${event.organizer_number}`} className="edv-contact-link">
+                  <Phone size={16} />
+                  <span>{event.organizer_number}</span>
+                </a>
+                <a href={`mailto:${event.organizer_email}`} className="edv-contact-link">
+                  <Mail size={16} />
+                  <span className="edv-contact-email break-words">{event.organizer_email}</span>
+                </a>
+              </div>
             </div>
-          </div>
+          </aside>
         </div>
       </div>
     </div>

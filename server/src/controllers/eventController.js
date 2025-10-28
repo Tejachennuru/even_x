@@ -154,7 +154,9 @@ exports.uploadImage = async (req, res) => {
     }
 
     const file = req.file;
-    const fileName = `${Date.now()}-${file.originalname}`;
+    // sanitize filename to avoid spaces or unsafe characters in storage paths
+    const safeOriginal = file.originalname.replace(/[^a-zA-Z0-9._-]/g, '_');
+    const fileName = `${Date.now()}-${safeOriginal}`;
     console.log('Uploading file to storage:', { fileName, size: file.size, mimetype: file.mimetype });
 
     const uploadResult = await supabase.storage
@@ -171,18 +173,17 @@ exports.uploadImage = async (req, res) => {
       return res.status(500).json({ error: uploadResult.error.message || 'Storage upload failed' });
     }
 
-    const { data: urlData, error: urlError } = await supabase.storage
+    // Get the public URL - ensure bucket is set to public in Supabase dashboard
+    const { data: urlData } = supabase.storage
       .from('event-posters')
       .getPublicUrl(fileName);
 
-    if (urlError) {
-      console.error('Error getting public URL:', urlError);
-      return res.status(500).json({ error: urlError.message || 'Failed to get public url' });
+    if (urlData && urlData.publicUrl) {
+      console.log('Public URL:', urlData.publicUrl);
+      return res.json({ url: urlData.publicUrl });
     }
 
-    console.log('Public URL:', urlData && urlData.publicUrl);
-
-    res.json({ url: urlData.publicUrl });
+    return res.status(500).json({ error: 'Failed to generate image url' });
   } catch (error) {
     console.error('Error in uploadImage:', error);
     res.status(500).json({ error: error.message });

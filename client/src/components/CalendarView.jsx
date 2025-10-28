@@ -87,16 +87,19 @@ export default function CalendarView({ events = [], onDateClick }) {
                   <div className="cv-day-month">{day.toLocaleString(undefined, {month:'short'})}</div>
                 </div>
 
-                {/* Events */}
+                {/* Events - Show as colored dots */}
                 <div className="cv-events">
-                  {evts.slice(0, 2).map((e) => (
-                    <div key={e.id} className={`evt-badge ${TYPE_COLORS[e.type] || 'type-general'}`} title={e.name}>
-                      <span className="evt-text-lg">{e.name.split(' ').slice(0, 2).join(' ')}</span>
-                      <span className="evt-text-sm">{e.name.split(' ')[0]}</span>
-                    </div>
+                  {evts.slice(0, 4).map((e) => (
+                    <div 
+                      key={e.id} 
+                      className={`evt-dot ${TYPE_COLORS[e.type] || 'type-general'}`} 
+                      title={e.name}
+                    />
                   ))}
-                  {evts.length > 2 && (
-                    <div className="evt-more">+{evts.length - 2} more</div>
+                  {evts.length > 4 && (
+                    <div className="evt-more-dot" title={`${evts.length - 4} more events`}>
+                      +{evts.length - 4}
+                    </div>
                   )}
                 </div>
               </button>

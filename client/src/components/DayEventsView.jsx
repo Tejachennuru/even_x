@@ -40,7 +40,11 @@ export default function DayEventsView({ date, events = [], onEventClick, onBack 
             >
               {/* Event Poster - Mobile: Full width, Desktop: Fixed width */}
               <div className="dev-poster">
-                <img src={ev.poster_url} alt={ev.name} className="dev-poster-img" />
+                <img 
+                  src={ev.poster_url} 
+                  alt={ev.name} 
+                  className="dev-poster-img"
+                />
               </div>
 
               {/* Event Details */}

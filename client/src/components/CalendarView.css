@@ -35,15 +35,12 @@
 .cv-day-month{ display:none; color:#9ca3af; font-size:0.75rem }
 @media (min-width:640px){ .cv-day-month{ display:block } }
 
-/* Events */
-.cv-events{ display:flex; flex-direction:column; gap:0.25rem }
-.evt-badge{ padding:0.125rem 0.375rem; font-size:0.75rem; border-radius:0.375rem; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
-.evt-text-lg{ display:none }
-.evt-text-sm{ display:inline }
-@media (min-width:640px){ .evt-text-lg{ display:inline } .evt-text-sm{ display:none } }
-.evt-more{ font-size:0.75rem; color:#6b7280; font-weight:500 }
+/* Events - Display as dots */
+.cv-events{ display:flex; flex-wrap:wrap; gap:0.25rem; align-items:center }
+.evt-dot{ width:8px; height:8px; border-radius:50%; flex-shrink:0 }
+.evt-more-dot{ font-size:0.625rem; color:#6b7280; font-weight:600; padding:0 0.125rem }
 
-/* Type colors */
+/* Type colors for dots */
 .type-tech{ background:#ef4444 }
 .type-cultural{ background:#3b82f6 }
 .type-wellness{ background:#10b981 }
