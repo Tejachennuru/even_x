@@ -1,0 +1,37 @@
+.dev-container{ width:100%; max-width:none; margin:0; }
+.dev-header{ display:flex; flex-direction:column; gap:0.75rem; align-items:flex-start; margin-bottom:1.25rem }
+@media (min-width:640px){ .dev-header{ flex-direction:row; align-items:center } }
+.dev-back{ display:inline-flex; align-items:center; gap:0.5rem; padding:0.5rem 0.75rem; border-radius:0.5rem; background:#fff; box-shadow:0 1px 3px rgba(0,0,0,0.06); cursor:pointer }
+.dev-back:hover{ box-shadow:0 6px 18px rgba(0,0,0,0.08) }
+.dev-title{ font-size:1.125rem; font-weight:700; color:#111827 }
+.dev-sub{ font-size:0.875rem; color:#6b7280; margin-top:0.25rem }
+
+.dev-empty{ background:#fff; padding:2rem; border-radius:1rem; box-shadow:0 1px 3px rgba(0,0,0,0.06); text-align:center }
+.dev-empty-illustration{ color:#9ca3af; margin-bottom:0.5rem }
+.dev-empty-title{ color:#374151; font-weight:600 }
+.dev-empty-sub{ color:#9ca3af; margin-top:0.25rem }
+
+.dev-list{ background:#fff; border-radius:1rem; box-shadow:0 1px 3px rgba(0,0,0,0.06); overflow:hidden; display:flex; flex-direction:column }
+.dev-list-item{ width:100%; text-align:left; padding:1rem; border-bottom:1px solid #f3f4f6; display:flex; gap:1rem; align-items:flex-start; background:transparent; cursor:pointer }
+.dev-list-item:hover{ background:#f3e8ff }
+.dev-poster{ width:100%; max-width:5rem; flex-shrink:0 }
+.dev-poster-img{ width:100%; height:4.5rem; object-fit:cover; border-radius:0.5rem }
+@media (min-width:640px){ .dev-poster-img{ height:2.5rem } }
+
+.dev-details{ flex:1; min-width:0 }
+.dev-details-top{ display:flex; flex-direction:column; gap:0.5rem; justify-content:space-between }
+@media (min-width:640px){ .dev-details-top{ flex-direction:row; align-items:flex-start } }
+.dev-ev-name{ font-weight:600; color:#111827 }
+.dev-ev-time{ display:inline-flex; gap:0.5rem; align-items:center; color:#6b7280 }
+.dev-venue{ display:flex; gap:0.5rem; align-items:center; color:#6b7280; margin:0.5rem 0 }
+.dev-desc{ color:#6b7280; margin-bottom:0.5rem }
+
+.dev-type{ display:inline-block; padding:0.25rem 0.5rem; border-radius:9999px; color:#fff; font-weight:600; font-size:0.75rem }
+.type-tech{ background:#ef4444 }
+.type-cultural{ background:#3b82f6 }
+.type-wellness{ background:#10b981 }
+.type-general{ background:#111827 }
+
+.dev-arrow{ display:none; align-items:center; color:#9ca3af }
+@media (min-width:640px){ .dev-arrow{ display:flex } }
+

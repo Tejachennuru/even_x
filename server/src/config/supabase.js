@@ -4,6 +4,21 @@ require('dotenv').config();
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
 
+// For local debugging, log the key 'role' claim (service_role vs anon) without
+// printing the key itself. This helps detect when the server is running with
+// the public/anon key which will cause RLS failures on inserts.
+if (supabaseKey) {
+	try {
+		const jwt = require('jsonwebtoken');
+		const decoded = jwt.decode(supabaseKey) || {};
+		if (decoded && decoded.role) {
+			console.log('Supabase key role detected:', decoded.role);
+		}
+	} catch (e) {
+		// ignore decode errors
+	}
+}
+
 // If environment variables appear to be placeholders or invalid, provide a
 // minimal in-memory mock so the server can run in local dev without a real
 // Supabase project. The mock implements the chainable API used by the

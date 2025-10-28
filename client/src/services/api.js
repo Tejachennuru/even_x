@@ -34,9 +34,10 @@ export const adminAPI = {
   uploadImage: (file) => {
     const formData = new FormData();
     formData.append('image', file);
-    return api.post('/admin/upload', formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    });
+    // Do NOT set Content-Type header manually — letting the browser set it
+    // ensures the multipart boundary is included. Setting it without the
+    // boundary can break multer on the server and cause upload failures.
+    return api.post('/admin/upload', formData);
   },
 };
 

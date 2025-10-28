@@ -149,27 +149,42 @@ exports.getStageSchedule = async (req, res) => {
 exports.uploadImage = async (req, res) => {
   try {
     if (!req.file) {
+      console.warn('Upload attempt with no file attached. Headers:', req.headers && req.headers['content-type']);
       return res.status(400).json({ error: 'No file uploaded' });
     }
 
     const file = req.file;
     const fileName = `${Date.now()}-${file.originalname}`;
+    console.log('Uploading file to storage:', { fileName, size: file.size, mimetype: file.mimetype });
 
-    const { data, error } = await supabase.storage
+    const uploadResult = await supabase.storage
       .from('event-posters')
       .upload(fileName, file.buffer, {
         contentType: file.mimetype,
         upsert: false
       });
 
-    if (error) throw error;
+    console.log('Supabase upload result:', uploadResult);
 
-    const { data: urlData } = supabase.storage
+    if (uploadResult.error) {
+      console.error('Supabase storage upload error:', uploadResult.error);
+      return res.status(500).json({ error: uploadResult.error.message || 'Storage upload failed' });
+    }
+
+    const { data: urlData, error: urlError } = await supabase.storage
       .from('event-posters')
       .getPublicUrl(fileName);
 
+    if (urlError) {
+      console.error('Error getting public URL:', urlError);
+      return res.status(500).json({ error: urlError.message || 'Failed to get public url' });
+    }
+
+    console.log('Public URL:', urlData && urlData.publicUrl);
+
     res.json({ url: urlData.publicUrl });
   } catch (error) {
+    console.error('Error in uploadImage:', error);
     res.status(500).json({ error: error.message });
   }
 };
